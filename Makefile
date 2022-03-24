@@ -2,17 +2,26 @@ SRC=./src
 BIN=./bin
 TESTS_SRC=./tests
 TESTS_BIN=$(TESTS_SRC)/bin
+COV=$(TESTS_BIN)/cov
 UNITY_SRC=./tests/unity
 UNITY=$(TESTS_BIN)/unity.o
-CFLAGS+=-g
-CFLAGS+=-Wall
-CFLAGS+=-Wextra
-CFLAGS+=-Werror
+CFLAGS += -g
+CFLAGS += -Wall
+CFLAGS += -Wextra
+CFLAGS += -Werror
+# gcov
+CFLAGS += -fprofile-arcs
+CFLAGS += -ftest-coverage
+# unity
 TESTS_FLAGS=-Wno-implicit-function-declaration
+
+TARGETS += bubblesort_int bubblesort_generic
+TARGETS += quicksort_int quicksort_generic
 
 # Create output directories
 _BUILD_BIN::=$(shell mkdir -p $(BIN))
 _BUILD_TESTS_BIN::=$(shell mkdir -p $(TESTS_BIN))
+_BUILD_COV::=$(shell mkdir -p $(COV))
 
 all: bubblesort quicksort
 
@@ -73,6 +82,15 @@ tests: all
 	$(TESTS_BIN)/test_quicksort_int
 	$(TESTS_BIN)/test_quicksort_generic
 
+cov: tests
+	mv $(BIN)/*.gcov $(COV) 2>/dev/null || true
+	mv $(BIN)/*.gcda $(COV) 2>/dev/null || true
+	mv $(BIN)/*.gcno $(COV) 2>/dev/null || true
+	$(foreach TARGET,$(TARGETS),gcov $(COV)/$(TARGET).c)
+	mv *gcov $(COV)
+	gcovr $(COV) -r $(SRC)
+
 clean:
 	rm -rf $(BIN)
 	rm -rf $(TESTS_BIN)
+	rm -rf $(COV)

@@ -6,6 +6,7 @@
 - [Implementações](#implementações)
 - [Testes](#testes)
 - [Makefile](#makefile)
+  - [Cobertura de testes](#cobertura-de-testes)
 
 ## Contrato
 
@@ -85,4 +86,60 @@ Para apagar todos os ficheiros compilados fazer:
 
 ```bash
 make clean
+```
+
+### Cobertura de testes
+
+A avaliação da cobertura é feita através do GNU Coverage Toolkit (GCC) - `gcov`. Para funcionar, o código deve ser compilado com as seguintes flags (além das já utilizadas):
+
+```bash
+-fprofile-arcs -ftest-coverage
+```
+
+Por exemplo, para a implementação do BubbleSort num array de inteiros, a linha de compilação vai ser:
+
+```bash
+gcc -c -g -Wall -Wextra -Werror -fprofile-arcs -ftest-coverage src/bubblesort_int.c -o bin/bubblesort_int.o
+```
+
+O programa vai gerar estruturas para coleção de estatísticas de cobertura no ficheiro `bin/test_bubblesort_int.gcno`.
+
+Ao executar um teste, ou um programa que utilize `bubblesort_int.o`, o GCC vai colecionar estatísticas de cobertura o ficheiro `bin/test_bubblesort_int.gcda`.
+
+Para interpretar o resultado, é necessário executar o `gcov`, com acesso ao código fonte, e aos ficheiros previamente gerados:
+
+```bash
+gcov src/bubblesort_int.c -o bin
+```
+
+Vai ser gerado um ficheiro `src/bubblesort_int.c.gcov` com as linhas docódigo fonte anotadas com a quantidade de vezes que foram executadas. Desta forma é possível identificar linhas de código que não são *cobertas* pelos testes.
+
+Existe uma ferramenta que permite obter a coleção de todas as estatísticas recolhidas num determinado diretório - a [gcovr](https://gcovr.com/).
+
+```bash
+gcovr .
+```
+
+Para compilar todos os algoritmos, executar os testes, e obter a tabela de cobertura, fazer:
+
+```bash
+make cov
+```
+
+A tabela final deve ser idêntica a:
+
+```bash
+------------------------------------------------------------------------------
+                           GCC Code Coverage Report
+Directory: ./src
+------------------------------------------------------------------------------
+File                                       Lines    Exec  Cover   Missing
+------------------------------------------------------------------------------
+bubblesort_generic.c                           8       8   100%   
+bubblesort_int.c                               8       8   100%   
+quicksort_generic.c                           25      25   100%   
+quicksort_int.c                               25      25   100%   
+------------------------------------------------------------------------------
+TOTAL                                         66      66   100%
+------------------------------------------------------------------------------
 ```
