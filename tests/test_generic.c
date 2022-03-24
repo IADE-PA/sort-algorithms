@@ -34,14 +34,14 @@ int compare(int* a, int* b) {
     return *a - *b;
 }
 
-void test_simple_int_array(void) {
+void test_generic_int_array(void) {
     sort((comparable*)numbers, NUMBERS_SIZE, (int (*)(comparable, comparable))compare);
     for (int i = 0; i < NUMBERS_SIZE; i++) {
         TEST_ASSERT_EQUAL_INT(i + 1, *(numbers[i]));
     }
 }
 
-void test_single_element_array(void) {
+void test_generic_single_element_array(void) {
     int** small_numbers = (int**)malloc(sizeof(int*) * 1);
     small_numbers[0] = (int*)malloc(sizeof(int));
     *(small_numbers[0]) = 1;
@@ -53,7 +53,7 @@ void test_single_element_array(void) {
 
 int main(void) {
     UNITY_BEGIN();
-    RUN_TEST(test_simple_int_array);
-    RUN_TEST(test_single_element_array);
+    RUN_TEST(test_generic_int_array);
+    RUN_TEST(test_generic_single_element_array);
     return UNITY_END();
 }
