@@ -11,8 +11,8 @@ void setUp(void) {
     for (int i = 0; i < NUMBERS_SIZE; i++) {
         numbers[i] = (int*)malloc(sizeof(int));
     }
-    *(numbers[0]) = 1;
-    *(numbers[1]) = 7;
+    *(numbers[0]) = 7;
+    *(numbers[1]) = 1;
     *(numbers[2]) = 2;
     *(numbers[3]) = 8;
     *(numbers[4]) = 3;
@@ -36,13 +36,21 @@ int compare(int* a, int* b) {
 
 void test_simple_int_array(void) {
     sort((comparable*)numbers, NUMBERS_SIZE, (int (*)(comparable, comparable))compare);
-    // TEST_ASSERT_EQUAL_INT_ARRAY(numbers, ((int[]){1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), NUMBERS_SIZE);
+    for (int i = 0; i < NUMBERS_SIZE; i++) {
+        TEST_ASSERT_EQUAL_INT(i + 1, *(numbers[i]));
+    }
 }
 
 void test_single_element_array(void) {
+    int** small_numbers = (int**)malloc(sizeof(int*) * 1);
+    small_numbers[0] = (int*)malloc(sizeof(int));
+    *(small_numbers[0]) = 1;
+    sort((comparable*)small_numbers, 1, (int (*)(comparable, comparable))compare);
+    TEST_ASSERT_EQUAL_INT(1, *(small_numbers[0]));
+    free(small_numbers[0]);
+    free(small_numbers);
 }
 
-// not needed when using generate_test_runner.rb
 int main(void) {
     UNITY_BEGIN();
     RUN_TEST(test_simple_int_array);
