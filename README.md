@@ -90,7 +90,7 @@ make clean
 
 ### Cobertura de testes
 
-A avaliação da cobertura é feita através do GNU Coverage Toolkit (GCC) - `gcov`. Para funcionar, o código deve ser compilado com as seguintes flags (além das já utilizadas):
+A avaliação da cobertura é feita através do [GNU Coverage Toolkit (GCC) - `gcov`](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html). Para funcionar, o código deve ser compilado com as seguintes flags (além das já utilizadas):
 
 ```bash
 -fprofile-arcs -ftest-coverage
