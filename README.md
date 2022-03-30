@@ -1,4 +1,4 @@
-![Tests](https://github.com/IADE-PA/sort-algorithm/workflows/Tests/badge.svg)
+![Tests](https://github.com/IADE-PA/sort-algorithms/workflows/Tests/badge.svg)
 
 # IADE/UE - Programação e Algoritmos  <!-- omit in toc -->
 
