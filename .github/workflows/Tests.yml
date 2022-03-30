@@ -11,4 +11,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Test with unity and report coverage
       run: |
+        apt install gcovr
         make cov
