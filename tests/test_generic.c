@@ -35,7 +35,7 @@ int compare(int* a, int* b) {
 }
 
 void test_generic_int_array(void) {
-    sort((comparable*)numbers, NUMBERS_SIZE, (int (*)(comparable, comparable))compare);
+    sort((void**)numbers, NUMBERS_SIZE, (int (*)(void*, void*))compare);
     for (int i = 0; i < NUMBERS_SIZE; i++) {
         TEST_ASSERT_EQUAL_INT(i + 1, *(numbers[i]));
     }
@@ -45,7 +45,7 @@ void test_generic_single_element_array(void) {
     int** small_numbers = (int**)malloc(sizeof(int*) * 1);
     small_numbers[0] = (int*)malloc(sizeof(int));
     *(small_numbers[0]) = 1;
-    sort((comparable*)small_numbers, 1, (int (*)(comparable, comparable))compare);
+    sort((void**)small_numbers, 1, (int (*)(void*, void*))compare);
     TEST_ASSERT_EQUAL_INT(1, *(small_numbers[0]));
     free(small_numbers[0]);
     free(small_numbers);

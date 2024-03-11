@@ -3,15 +3,15 @@
 
 #include "sort.h"
 
-void swap(comparable *collection, const int a, const int b) {
-    comparable tmp = collection[a];
+void swap(void* *collection, const int a, const int b) {
+    void* tmp = collection[a];
     collection[a] = collection[b];
     collection[b] = tmp;
 }
 
-int partition(comparable collection[], const int low, const int high, int (*compare)(comparable, comparable)) {
+int partition(void* collection[], const int low, const int high, int (*compare)(void*, void*)) {
     int pivot_idx = (low + high) / 2;
-    comparable pivot = collection[pivot_idx];
+    void* pivot = collection[pivot_idx];
 
     int l = low - 1;
     int h = high + 1;
@@ -28,7 +28,7 @@ int partition(comparable collection[], const int low, const int high, int (*comp
     return h;
 }
 
-void quicksort(comparable collection[], const int low, const int high, int (*compare)(comparable, comparable)) {
+void quicksort(void* collection[], const int low, const int high, int (*compare)(void*, void*)) {
     if (low < high) {
         int pivot_idx = partition(collection, low, high, compare);
         quicksort(collection, low, pivot_idx, compare);
@@ -36,6 +36,6 @@ void quicksort(comparable collection[], const int low, const int high, int (*com
     }
 }
 
-void sort(comparable collection[], const int size, int (*compare)(comparable, comparable)) {
+void sort(void* collection[], const int size, int (*compare)(void*, void*)) {
     quicksort(collection, 0, size - 1, compare);
 }
