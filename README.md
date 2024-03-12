@@ -18,12 +18,6 @@ Um algoritmo de ordenação é definido pelo seguinte contrato, em [`src/sort.h`
 void sort(void* collection[], const int size, int (*compare)(void*, void*));
 ```
 
-Onde `void*` representa um tipo de dados comparável, i.e., que permite estabelecer relações de igualdade (`== < <= > >=`).
-
-```C
-typedef void* void*;
-```
-
 As implementações sobre arrays de inteiros seguem o contrato em [`src/sort_int.h`](src/sort_int.h):
 
 ```C

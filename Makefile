@@ -17,13 +17,14 @@ TESTS_FLAGS=-Wno-implicit-function-declaration
 
 TARGETS += bubblesort_int bubblesort_generic
 TARGETS += quicksort_int quicksort_generic
+TARGETS += mergesort_int
 
 # Create output directories
 _BUILD_BIN::=$(shell mkdir -p $(BIN))
 _BUILD_TESTS_BIN::=$(shell mkdir -p $(TESTS_BIN))
 _BUILD_COV::=$(shell mkdir -p $(COV))
 
-all: bubblesort quicksort
+all: bubblesort quicksort mergesort
 
 # BubbleSort
 
@@ -53,6 +54,15 @@ quicksort_generic: $(BIN)/quicksort_generic.o $(TESTS_BIN)/test_quicksort_generi
 $(BIN)/quicksort_generic.o: $(SRC)/quicksort_generic.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
+# Mergesort
+
+mergesort: mergesort_int
+
+mergesort_int: $(BIN)/mergesort_int.o $(TESTS_BIN)/test_mergesort_int
+
+$(BIN)/mergesort_int.o: $(SRC)/mergesort_int.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
 ## Tests
 
 # BubbleSort
@@ -71,6 +81,12 @@ $(TESTS_BIN)/test_quicksort_int: $(TESTS_SRC)/test_int.c $(BIN)/quicksort_int.o 
 $(TESTS_BIN)/test_quicksort_generic: $(TESTS_SRC)/test_generic.c $(BIN)/quicksort_generic.o $(UNITY)
 	$(CC) $(CFLAGS) $(TESTS_FLAGS) $^ -o $@
 
+# Mergesort
+
+$(TESTS_BIN)/test_mergesort_int: $(TESTS_SRC)/test_int.c $(BIN)/mergesort_int.o $(UNITY)
+	$(CC) $(CFLAGS) $(TESTS_FLAGS) $^ -o $@
+
+
 $(UNITY): $(UNITY_SRC)/unity.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
@@ -81,6 +97,7 @@ tests: all
 	$(TESTS_BIN)/test_bubblesort_generic
 	$(TESTS_BIN)/test_quicksort_int
 	$(TESTS_BIN)/test_quicksort_generic
+	$(TESTS_BIN)/test_mergesort_int
 
 cov: tests
 	mv $(BIN)/*.gcov $(COV) 2>/dev/null || true
